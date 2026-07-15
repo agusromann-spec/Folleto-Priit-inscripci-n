@@ -24,9 +24,11 @@ for (let i = 1; i <= PDF.numPages; i++) {
         viewport
     }).promise;
 
+
     const div = document.createElement("div");
 
     div.className = "page";
+
 
     const img = document.createElement("img");
 
@@ -36,11 +38,15 @@ for (let i = 1; i <= PDF.numPages; i++) {
     img.style.height = "100%";
     img.style.objectFit = "contain";
 
+
     div.appendChild(img);
 
     pages.push(div);
 
 }
+
+
+// Página final personalizada
 
 const ultima = document.createElement("div");
 
@@ -49,12 +55,13 @@ ultima.className = "page";
 ultima.innerHTML = `
 <div class="ultima">
 
-<a
-    class="btn-priit"
-    href="https://formularios.ambiente.gba.gob.ar/form/37"
-    target="_blank">
+<h1>PRIIT</h1>
 
-    INSCRIBIRME
+<a href="https://formularios.ambiente.gba.gob.ar/form/37"
+target="_blank"
+class="boton-inscripcion">
+
+INSCRIBIRME
 
 </a>
 
@@ -62,6 +69,8 @@ ultima.innerHTML = `
 `;
 
 pages.push(ultima);
+
+
 
 const flip = new St.PageFlip(
     document.getElementById("book"),
@@ -72,42 +81,165 @@ const flip = new St.PageFlip(
         showCover:true,
         autoSize:true,
         usePortrait:true,
-        maxShadowOpacity:0.4
+        maxShadowOpacity:0.4,
+
+        // NUEVO
+        mobileScrollSupport:false
     }
 );
 
+
 flip.loadFromHTML(pages);
+
+
 
 document.getElementById("pageInfo").innerHTML =
 `1 / ${pages.length}`;
 
+
 flip.on("flip", e=>{
 
-document.getElementById("pageInfo").innerHTML =
-`${e.data+1} / ${pages.length}`;
+    document.getElementById("pageInfo").innerHTML =
+    `${e.data+1} / ${pages.length}`;
 
 });
+
+
 
 document.getElementById("next").onclick=()=>flip.flipNext();
 
 document.getElementById("prev").onclick=()=>flip.flipPrev();
+
+
+
+// ================================
+// ZOOM DEL FOLLETO
+// ================================
+
 let zoom = 1;
 
 const book = document.getElementById("book");
 
-document.getElementById("zoomContainer")
-.addEventListener("wheel", e=>{
 
-    if(e.ctrlKey){
+function aplicarZoom(){
 
-        e.preventDefault();
+    book.style.transform =
+    `scale(${zoom})`;
 
-        zoom += e.deltaY > 0 ? -0.1 : 0.1;
+    book.style.transformOrigin =
+    "center center";
 
-        zoom = Math.max(1, Math.min(3, zoom));
+}
 
-        book.style.transform = `scale(${zoom})`;
+
+
+document.getElementById("zoomIn").onclick=()=>{
+
+    if(zoom < 2.5){
+
+        zoom += 0.2;
+
+        aplicarZoom();
 
     }
 
-},{passive:false});
+};
+
+
+
+document.getElementById("zoomOut").onclick=()=>{
+
+    if(zoom > 1){
+
+        zoom -= 0.2;
+
+        aplicarZoom();
+
+    }
+
+};
+
+
+
+document.getElementById("zoomReset").onclick=()=>{
+
+    zoom = 1;
+
+    aplicarZoom();
+
+};
+
+
+
+// ================================
+// ZOOM CON PINZA EN CELULAR
+// ================================
+
+let inicioDistancia = null;
+
+
+book.addEventListener(
+"touchstart",
+e=>{
+
+    if(e.touches.length===2){
+
+        inicioDistancia =
+        Math.hypot(
+            e.touches[0].clientX -
+            e.touches[1].clientX,
+
+            e.touches[0].clientY -
+            e.touches[1].clientY
+        );
+
+    }
+
+});
+
+
+book.addEventListener(
+"touchmove",
+e=>{
+
+    if(e.touches.length===2){
+
+        let distancia =
+        Math.hypot(
+            e.touches[0].clientX -
+            e.touches[1].clientX,
+
+            e.touches[0].clientY -
+            e.touches[1].clientY
+        );
+
+
+        if(distancia > inicioDistancia + 20){
+
+            zoom +=0.05;
+
+            if(zoom>2.5)
+                zoom=2.5;
+
+
+            aplicarZoom();
+
+
+        }
+
+
+        if(distancia < inicioDistancia - 20){
+
+            zoom -=0.05;
+
+            if(zoom<1)
+                zoom=1;
+
+
+            aplicarZoom();
+
+        }
+
+    }
+
+});
