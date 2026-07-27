@@ -13,7 +13,6 @@ for (let i = 1; i <= PDF.numPages; i++) {
     });
 
     const canvas = document.createElement("canvas");
-
     const ctx = canvas.getContext("2d");
 
     canvas.width = viewport.width;
@@ -24,20 +23,18 @@ for (let i = 1; i <= PDF.numPages; i++) {
         viewport
     }).promise;
 
-
     const div = document.createElement("div");
-
     div.className = "page";
-
 
     const img = document.createElement("img");
 
     img.src = canvas.toDataURL("image/png");
 
+    img.draggable = false;
+
     img.style.width = "100%";
     img.style.height = "100%";
     img.style.objectFit = "contain";
-
 
     div.appendChild(img);
 
@@ -46,31 +43,46 @@ for (let i = 1; i <= PDF.numPages; i++) {
 }
 
 
-// Página final personalizada
+/* ===========================================
+   ULTIMA PAGINA
+=========================================== */
 
 const ultima = document.createElement("div");
 
 ultima.className = "page";
 
 ultima.innerHTML = `
+
 <div class="ultima">
 
-<h1>PRIIT</h1>
-
-<a href="https://formularios.ambiente.gba.gob.ar/form/37"
-target="_blank"
-class="boton-inscripcion">
+<a
+class="btn-priit"
+href="https://formularios.ambiente.gba.gob.ar/form/37"
+target="_blank">
 
 INSCRIBIRME
 
 </a>
 
+<a
+class="btn-download"
+href="assets/006_folletopriit.pdf"
+download>
+
+DESCARGAR PDF
+
+</a>
+
 </div>
+
 `;
 
 pages.push(ultima);
 
 
+/* ===========================================
+   PAGEFLIP
+=========================================== */
 
 const flip = new St.PageFlip(
     document.getElementById("book"),
@@ -78,47 +90,62 @@ const flip = new St.PageFlip(
         width:900,
         height:1273,
         size:"stretch",
-        showCover:true,
         autoSize:true,
+        showCover:true,
         usePortrait:true,
-        maxShadowOpacity:0.4,
-
-        // NUEVO
-        mobileScrollSupport:false
+        mobileScrollSupport:false,
+        maxShadowOpacity:0.4
     }
 );
-
 
 flip.loadFromHTML(pages);
 
 
+/* ===========================================
+   CONTADOR
+=========================================== */
 
-document.getElementById("pageInfo").innerHTML =
-`1 / ${pages.length}`;
+const pageInfo = document.getElementById("pageInfo");
 
+pageInfo.innerHTML = `1 / ${pages.length}`;
 
-flip.on("flip", e=>{
+flip.on("flip", e => {
 
-    document.getElementById("pageInfo").innerHTML =
-    `${e.data+1} / ${pages.length}`;
+    pageInfo.innerHTML =
+    `${e.data + 1} / ${pages.length}`;
+
+    // evita el salto en Safari/iPhone
+    window.scrollTo(0,0);
 
 });
 
 
+/* ===========================================
+   BOTONES
+=========================================== */
 
-document.getElementById("next").onclick=()=>flip.flipNext();
+document.getElementById("next").onclick = () => {
 
-document.getElementById("prev").onclick=()=>flip.flipPrev();
+    flip.flipNext();
+
+};
+
+document.getElementById("prev").onclick = () => {
+
+    flip.flipPrev();
+
+};
 
 
+/* ===========================================
+   ZOOM
+=========================================== */
 
-// ================================
-// ZOOM DEL FOLLETO
-// ================================
-
-let zoom = 1;
+const zoomContainer = document.getElementById("zoomContainer");
 
 const book = document.getElementById("book");
+
+let zoom = 1;
 
 
 function aplicarZoom(){
@@ -126,120 +153,155 @@ function aplicarZoom(){
     book.style.transform =
     `scale(${zoom})`;
 
-    book.style.transformOrigin =
-    "center center";
-
 }
 
 
+/* ===========================================
+   BOTONES + -
+=========================================== */
 
-document.getElementById("zoomIn").onclick=()=>{
+document.getElementById("zoomIn").onclick = ()=>{
 
-    if(zoom < 2.5){
+    zoom += 0.2;
 
-        zoom += 0.2;
+    if(zoom>3)
+        zoom=3;
 
-        aplicarZoom();
-
-    }
-
-};
-
-
-
-document.getElementById("zoomOut").onclick=()=>{
-
-    if(zoom > 1){
-
-        zoom -= 0.2;
-
-        aplicarZoom();
-
-    }
+    aplicarZoom();
 
 };
 
+document.getElementById("zoomOut").onclick = ()=>{
 
+    zoom -= 0.2;
 
-document.getElementById("zoomReset").onclick=()=>{
-
-    zoom = 1;
+    if(zoom<1)
+        zoom=1;
 
     aplicarZoom();
 
 };
 
 
+/* ===========================================
+   CTRL + RUEDA
+=========================================== */
 
-// ================================
-// ZOOM CON PINZA EN CELULAR
-// ================================
+zoomContainer.addEventListener(
 
-let inicioDistancia = null;
+"wheel",
 
-
-book.addEventListener(
-"touchstart",
 e=>{
 
-    if(e.touches.length===2){
+    if(!e.ctrlKey)
+        return;
 
-        inicioDistancia =
-        Math.hypot(
-            e.touches[0].clientX -
-            e.touches[1].clientX,
+    e.preventDefault();
 
-            e.touches[0].clientY -
-            e.touches[1].clientY
-        );
+    zoom += e.deltaY > 0 ? -0.1 : 0.1;
 
-    }
+    zoom = Math.max(1,Math.min(3,zoom));
+
+    aplicarZoom();
+
+},
+
+{passive:false}
+
+);
+
+
+/* ===========================================
+   PINZA EN CELULAR
+=========================================== */
+
+let startDistance = null;
+
+zoomContainer.addEventListener("touchstart",e=>{
+
+    if(e.touches.length!==2)
+        return;
+
+    startDistance = Math.hypot(
+
+        e.touches[0].clientX -
+        e.touches[1].clientX,
+
+        e.touches[0].clientY -
+        e.touches[1].clientY
+
+    );
 
 });
 
 
-book.addEventListener(
+zoomContainer.addEventListener("touchmove",e=>{
+
+    if(e.touches.length!==2)
+        return;
+
+    e.preventDefault();
+
+    const distance = Math.hypot(
+
+        e.touches[0].clientX -
+        e.touches[1].clientX,
+
+        e.touches[0].clientY -
+        e.touches[1].clientY
+
+    );
+
+    if(startDistance){
+
+        const factor = distance/startDistance;
+
+        zoom = Math.max(1,Math.min(3,factor));
+
+        aplicarZoom();
+
+    }
+
+},
+
+{passive:false});
+
+
+zoomContainer.addEventListener("touchend",()=>{
+
+    startDistance=null;
+
+});
+
+
+/* ===========================================
+   RESPONSIVE
+=========================================== */
+
+window.addEventListener("resize",()=>{
+
+    flip.update();
+
+});
+
+
+/* ===========================================
+   EVITA SCROLL EN IOS
+=========================================== */
+
+document.body.addEventListener(
+
 "touchmove",
+
 e=>{
 
-    if(e.touches.length===2){
+    if(zoom===1)
+        e.preventDefault();
 
-        let distancia =
-        Math.hypot(
-            e.touches[0].clientX -
-            e.touches[1].clientX,
+},
 
-            e.touches[0].clientY -
-            e.touches[1].clientY
-        );
+{passive:false}
 
+);
 
-        if(distancia > inicioDistancia + 20){
-
-            zoom +=0.05;
-
-            if(zoom>2.5)
-                zoom=2.5;
-
-
-            aplicarZoom();
-
-
-        }
-
-
-        if(distancia < inicioDistancia - 20){
-
-            zoom -=0.05;
-
-            if(zoom<1)
-                zoom=1;
-
-
-            aplicarZoom();
-
-        }
-
-    }
-
-});
+window.scrollTo(0,0);
