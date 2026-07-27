@@ -8,6 +8,7 @@
     box-sizing:border-box;
 }
 
+
 html,
 body{
 
@@ -21,12 +22,16 @@ body{
     font-family:Arial,Helvetica,sans-serif;
 
     overscroll-behavior:none;
-    -webkit-overflow-scrolling:auto;
+
+    -webkit-user-select:none;
+    user-select:none;
+
 }
 
 
+
 /* ===========================
-   VISOR
+   VISOR PRINCIPAL
 =========================== */
 
 .viewer{
@@ -35,6 +40,8 @@ body{
 
     inset:0;
 
+    padding-bottom:90px;
+
     display:flex;
 
     justify-content:center;
@@ -46,8 +53,9 @@ body{
 }
 
 
+
 /* ===========================
-   ZOOM
+   CONTENEDOR ZOOM
 =========================== */
 
 #zoomContainer{
@@ -56,35 +64,44 @@ body{
 
     height:100vh;
 
-    overflow:hidden;
-
     display:flex;
 
     justify-content:center;
 
     align-items:center;
 
+    overflow:hidden;
+
     touch-action:none;
 
 }
 
 
+
+/* ===========================
+   LIBRO
+=========================== */
+
 #book{
 
     width:95vw;
 
-    height:94vh;
+    height:90vh;
 
     transform-origin:center center;
 
     transition:transform .25s ease;
 
+    will-change:transform;
+
 }
+
 
 
 /* ===========================
    PAGINAS
 =========================== */
+
 
 .page{
 
@@ -112,9 +129,11 @@ body{
 }
 
 
+
 /* ===========================
-   BOTONES LATERALES
+   NAVEGACION
 =========================== */
+
 
 .nav{
 
@@ -124,39 +143,54 @@ body{
 
     transform:translateY(-50%);
 
-    width:70px;
 
-    height:70px;
+    width:65px;
+
+    height:65px;
+
 
     border:none;
 
     border-radius:50%;
 
+
     background:white;
+
 
     cursor:pointer;
 
-    font-size:34px;
 
-    box-shadow:0 5px 20px rgba(0,0,0,.25);
+    font-size:32px;
+
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.25);
+
 
     z-index:999;
+
 
     transition:.2s;
 
 }
 
+
 .nav:hover{
 
-    transform:translateY(-50%) scale(1.08);
+    transform:
+    translateY(-50%)
+    scale(1.08);
 
 }
+
+
 
 #prev{
 
     left:20px;
 
 }
+
 
 #next{
 
@@ -165,77 +199,120 @@ body{
 }
 
 
+
+
 /* ===========================
    TOOLBAR
 =========================== */
 
+
 .toolbar{
+
 
     position:fixed;
 
+
     left:50%;
 
-    bottom:18px;
+
+    bottom:
+    calc(15px + env(safe-area-inset-bottom));
+
 
     transform:translateX(-50%);
 
+
+
     display:flex;
+
 
     align-items:center;
 
-    gap:20px;
+
+    gap:18px;
+
+
 
     background:white;
 
+
+
     padding:12px 20px;
 
-    border-radius:40px;
 
-    box-shadow:0 8px 25px rgba(0,0,0,.20);
+
+    border-radius:45px;
+
+
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.25);
+
+
 
     z-index:9999;
 
 }
 
 
+
 #pageInfo{
-
-    font-size:18px;
-
-    font-weight:bold;
 
     min-width:80px;
 
     text-align:center;
 
+    font-size:17px;
+
+    font-weight:bold;
+
 }
+
+
 
 
 /* ===========================
    BOTONES ZOOM
 =========================== */
 
+
 .zoomBtn{
 
-    width:58px;
 
-    height:58px;
+    width:55px;
+
+    height:55px;
+
+
 
     border:none;
 
+
     border-radius:50%;
+
+
 
     background:#42B6E8;
 
+
+
     color:white;
+
+
 
     font-size:34px;
 
+
+
     cursor:pointer;
+
+
 
     transition:.2s;
 
 }
+
+
 
 .zoomBtn:hover{
 
@@ -246,144 +323,291 @@ body{
 }
 
 
+
+
+
+/* ===========================
+   BOTON DESCARGAR
+=========================== */
+
+
+.btn-download,
+#downloadPDF{
+
+
+    background:white;
+
+
+    color:#42B6E8;
+
+
+
+    border:2px solid #42B6E8;
+
+
+
+    padding:12px 25px;
+
+
+
+    border-radius:30px;
+
+
+
+    font-weight:bold;
+
+
+
+    cursor:pointer;
+
+
+
+    text-decoration:none;
+
+
+
+}
+
+
+
+.btn-download:hover,
+#downloadPDF:hover{
+
+
+    background:#42B6E8;
+
+
+    color:white;
+
+
+}
+
+
+
+
 /* ===========================
    ULTIMA PAGINA
 =========================== */
 
+
 .ultima{
+
 
     width:100%;
 
+
     height:100%;
+
 
     display:flex;
 
+
     flex-direction:column;
+
 
     justify-content:center;
 
+
     align-items:center;
 
-    gap:22px;
+
+    gap:20px;
+
 
 }
+
 
 
 .btn-priit{
 
+
     background:#42B6E8;
+
 
     color:white;
 
+
     text-decoration:none;
+
 
     font-size:24px;
 
+
     font-weight:bold;
+
 
     padding:18px 45px;
 
+
     border-radius:12px;
 
-    transition:.25s;
 
 }
+
+
 
 .btn-priit:hover{
 
+
     background:#2ca6dc;
 
-}
-
-
-.btn-download{
-
-    background:white;
-
-    color:#42B6E8;
-
-    border:2px solid #42B6E8;
-
-    text-decoration:none;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    padding:12px 30px;
-
-    border-radius:30px;
-
-    transition:.25s;
 
 }
 
-.btn-download:hover{
 
-    background:#42B6E8;
-
-    color:white;
-
-}
 
 
 /* ===========================
    CELULAR
 =========================== */
 
-@media (max-width:900px){
 
-    #book{
+@media(max-width:900px){
 
-        width:100vw;
 
-        height:100vh;
 
-    }
+.viewer{
 
-    .nav{
 
-        width:60px;
+    padding-bottom:70px;
 
-        height:60px;
-
-        font-size:28px;
-
-    }
-
-    .toolbar{
-
-        bottom:12px;
-
-        padding:10px 16px;
-
-        gap:16px;
-
-    }
-
-    .zoomBtn{
-
-        width:54px;
-
-        height:54px;
-
-        font-size:30px;
-
-    }
 
 }
 
 
-/* Horizontal */
 
-@media (orientation:landscape) and (max-width:900px){
 
-    #book{
+#book{
 
-        width:100vw;
 
-        height:100vh;
+    width:100vw;
 
-    }
+
+    height:85vh;
+
+
+}
+
+
+
+.nav{
+
+
+    width:55px;
+
+
+    height:55px;
+
+
+    font-size:26px;
+
+
+}
+
+
+
+#prev{
+
+    left:8px;
+
+}
+
+
+#next{
+
+    right:8px;
+
+}
+
+
+
+.toolbar{
+
+
+    bottom:
+    calc(10px + env(safe-area-inset-bottom));
+
+
+    gap:12px;
+
+
+    padding:8px 14px;
+
+
+}
+
+
+
+.zoomBtn{
+
+
+    width:50px;
+
+
+    height:50px;
+
+
+    font-size:30px;
+
+
+}
+
+
+
+}
+
+
+
+
+/* ===========================
+   CELULAR HORIZONTAL
+=========================== */
+
+
+@media(
+orientation:landscape
+)
+and
+(max-width:900px){
+
+
+#book{
+
+    width:100vw;
+
+    height:90vh;
+
+}
+
+
+
+}
+
+
+
+
+/* ===========================
+   PANTALLAS PEQUEÑAS
+=========================== */
+
+
+@media(max-width:420px){
+
+
+.nav{
+
+    display:none;
+
+}
+
+
+
+#pageInfo{
+
+    font-size:14px;
+
+}
+
+
 
 }
