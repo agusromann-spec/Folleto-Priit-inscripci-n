@@ -3,75 +3,134 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-    <title>PRIIT Flipbook</title>
+<title>PRIIT Flipbook</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
+
 <body>
+
 
 <div class="viewer">
 
-    <button id="prev" class="nav">❮</button>
 
+    <!-- BOTÓN ANTERIOR -->
+    <button id="prev" class="nav" aria-label="Página anterior">
+        ❮
+    </button>
+
+
+    <!-- LIBRO -->
     <div id="zoomContainer">
 
         <div id="book"></div>
 
     </div>
 
-    <button id="next" class="nav">❯</button>
+
+    <!-- BOTÓN SIGUIENTE -->
+    <button id="next" class="nav" aria-label="Página siguiente">
+        ❯
+    </button>
+
 
 </div>
 
 
 
-<!-- CONTROLES INFERIORES -->
+<!-- BARRA DE CONTROL -->
 
 <div class="toolbar">
 
-    <button id="zoomOut" class="zoomBtn">−</button>
 
-    <span id="pageInfo">1 / 1</span>
+    <button id="zoomOut"
+    class="zoomBtn">
 
-    <button id="zoomIn" class="zoomBtn">+</button>
+        −
+
+    </button>
+
+
+
+    <span id="pageInfo">
+        Cargando...
+    </span>
+
+
+
+    <button id="zoomIn"
+    class="zoomBtn">
+
+        +
+
+    </button>
+
+
+
+    <button id="downloadPDF"
+    class="actionBtn">
+
+        Descargar PDF
+
+    </button>
+
+
 
 </div>
 
 
 
-<!-- PDF.js -->
+<!-- BOTÓN INSCRIPCIÓN -->
+
+<a
+id="subscribeBtn"
+href="https://formularios.ambiente.gba.gob.ar/form/37"
+target="_blank">
+
+Inscribirme
+
+</a>
+
+
+
+
+<!-- PDF.JS -->
 
 <script type="module">
 
 import * as pdfjsLib from
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
 
+
 window.pdfjsLib = pdfjsLib;
+
 
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
 
 </script>
 
 
 
-<!-- PageFlip -->
+<!-- PAGEFLIP -->
 
 <script src="lib/page-flip.browser.js"></script>
 
 
 
-<!-- Script -->
+<!-- SCRIPT PRINCIPAL -->
 
 <script type="module" src="script.js"></script>
+
+
 
 </body>
 
