@@ -1,3 +1,7 @@
+/* ===========================
+   RESET
+=========================== */
+
 *{
     margin:0;
     padding:0;
@@ -12,38 +16,24 @@ body{
 
     overflow:hidden;
 
-    background:#d8d8d8;
+    background:#d9d9d9;
 
     font-family:Arial,Helvetica,sans-serif;
 
+    overscroll-behavior:none;
+    -webkit-overflow-scrolling:auto;
 }
+
+
+/* ===========================
+   VISOR
+=========================== */
 
 .viewer{
 
-    width:100vw;
-    height:100vh;
+    position:fixed;
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    position:relative;
-
-}
-
-#book{
-
-    width:95vw;
-
-    height:92vh;
-
-}
-
-.page{
-
-    background:white;
+    inset:0;
 
     display:flex;
 
@@ -55,119 +45,18 @@ body{
 
 }
 
-.page canvas{
 
-    width:100%;
+/* ===========================
+   ZOOM
+=========================== */
 
-    height:100%;
+#zoomContainer{
 
-    object-fit:contain;
+    width:100vw;
 
-}
+    height:100vh;
 
-.toolbar{
-
-    position:fixed;
-
-    bottom:15px;
-
-    left:50%;
-
-    transform:translateX(-50%);
-
-    background:white;
-
-    padding:10px 20px;
-
-    border-radius:12px;
-
-    box-shadow:0 5px 20px rgba(0,0,0,.25);
-
-    z-index:1000;
-
-}
-
-.nav{
-
-    position:absolute;
-
-    width:55px;
-
-    height:55px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:white;
-
-    font-size:28px;
-
-    cursor:pointer;
-
-    box-shadow:0 3px 15px rgba(0,0,0,.25);
-
-    z-index:1000;
-
-}
-
-#prev{
-
-    left:25px;
-
-}
-
-#next{
-
-    right:25px;
-
-}
-.page img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-.ultima{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100%;
-}
-
-.btn-priit{
-
-    background:#42B6E8;
-
-    color:white;
-
-    text-decoration:none;
-
-    padding:18px 45px;
-
-    border-radius:10px;
-
-    font-size:24px;
-
-    font-weight:bold;
-
-    transition:.25s;
-
-}
-
-.btn-priit:hover{
-
-    background:#28A9DF;
-
-    transform:scale(1.05);
-
-}#zoomContainer{
-
-    width:95vw;
-
-    height:92vh;
-
-    overflow:auto;
+    overflow:hidden;
 
     display:flex;
 
@@ -179,24 +68,322 @@ body{
 
 }
 
+
 #book{
+
+    width:95vw;
+
+    height:94vh;
 
     transform-origin:center center;
 
+    transition:transform .25s ease;
+
 }
-#book{
-    transition: transform 0.25s ease;
+
+
+/* ===========================
+   PAGINAS
+=========================== */
+
+.page{
+
+    background:white;
+
+    overflow:hidden;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
 
-.boton-inscripcion{
+.page img{
 
-    background:#62c7e8;
-    color:white;
-    padding:15px 35px;
-    border-radius:30px;
-    text-decoration:none;
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+}
+
+
+/* ===========================
+   BOTONES LATERALES
+=========================== */
+
+.nav{
+
+    position:fixed;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:70px;
+
+    height:70px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    cursor:pointer;
+
+    font-size:34px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.25);
+
+    z-index:999;
+
+    transition:.2s;
+
+}
+
+.nav:hover{
+
+    transform:translateY(-50%) scale(1.08);
+
+}
+
+#prev{
+
+    left:20px;
+
+}
+
+#next{
+
+    right:20px;
+
+}
+
+
+/* ===========================
+   TOOLBAR
+=========================== */
+
+.toolbar{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    background:white;
+
+    padding:12px 20px;
+
+    border-radius:40px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.20);
+
+    z-index:9999;
+
+}
+
+
+#pageInfo{
+
+    font-size:18px;
+
     font-weight:bold;
-    display:inline-block;
+
+    min-width:80px;
+
+    text-align:center;
+
+}
+
+
+/* ===========================
+   BOTONES ZOOM
+=========================== */
+
+.zoomBtn{
+
+    width:58px;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#42B6E8;
+
+    color:white;
+
+    font-size:34px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.zoomBtn:hover{
+
+    transform:scale(1.08);
+
+    background:#2ca6dc;
+
+}
+
+
+/* ===========================
+   ULTIMA PAGINA
+=========================== */
+
+.ultima{
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:22px;
+
+}
+
+
+.btn-priit{
+
+    background:#42B6E8;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    padding:18px 45px;
+
+    border-radius:12px;
+
+    transition:.25s;
+
+}
+
+.btn-priit:hover{
+
+    background:#2ca6dc;
+
+}
+
+
+.btn-download{
+
+    background:white;
+
+    color:#42B6E8;
+
+    border:2px solid #42B6E8;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    padding:12px 30px;
+
+    border-radius:30px;
+
+    transition:.25s;
+
+}
+
+.btn-download:hover{
+
+    background:#42B6E8;
+
+    color:white;
+
+}
+
+
+/* ===========================
+   CELULAR
+=========================== */
+
+@media (max-width:900px){
+
+    #book{
+
+        width:100vw;
+
+        height:100vh;
+
+    }
+
+    .nav{
+
+        width:60px;
+
+        height:60px;
+
+        font-size:28px;
+
+    }
+
+    .toolbar{
+
+        bottom:12px;
+
+        padding:10px 16px;
+
+        gap:16px;
+
+    }
+
+    .zoomBtn{
+
+        width:54px;
+
+        height:54px;
+
+        font-size:30px;
+
+    }
+
+}
+
+
+/* Horizontal */
+
+@media (orientation:landscape) and (max-width:900px){
+
+    #book{
+
+        width:100vw;
+
+        height:100vh;
+
+    }
 
 }
