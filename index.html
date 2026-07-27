@@ -2,53 +2,76 @@
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>PRIIT Flipbook</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-    <div class="viewer">
+<div class="viewer">
 
-        <button id="prev" class="nav">❮</button>
+    <button id="prev" class="nav">❮</button>
 
-       <div id="zoomContainer">
+    <div id="zoomContainer">
 
-    <div id="book">
+        <div id="book"></div>
+
+    </div>
+
+    <button id="next" class="nav">❯</button>
 
 </div>
 
-        <button id="next" class="nav">❯</button>
 
-    </div>
-        <button id="zoomOut">−</button>
 
-<button id="zoomReset">100%</button>
+<!-- CONTROLES INFERIORES -->
 
-<button id="zoomIn">+</button>
+<div class="toolbar">
 
-    <div class="toolbar">
-        <span id="pageInfo">Cargando...</span>
-    </div>
+    <button id="zoomOut" class="zoomBtn">−</button>
 
-    <!-- PDF.js -->
-    <script type="module">
-        import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+    <span id="pageInfo">1 / 1</span>
 
-        window.pdfjsLib = pdfjsLib;
+    <button id="zoomIn" class="zoomBtn">+</button>
 
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-    </script>
+</div>
 
-    <!-- PageFlip -->
-    <script src="lib/page-flip.browser.js"></script>
 
-    <!-- Tu código -->
-    <script type="module" src="script.js"></script>
+
+<!-- PDF.js -->
+
+<script type="module">
+
+import * as pdfjsLib from
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
+
+window.pdfjsLib = pdfjsLib;
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+
+</script>
+
+
+
+<!-- PageFlip -->
+
+<script src="lib/page-flip.browser.js"></script>
+
+
+
+<!-- Script -->
+
+<script type="module" src="script.js"></script>
 
 </body>
 
