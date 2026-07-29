@@ -3,9 +3,13 @@
 ========================================================= */
 
 * {
+
     margin: 0;
+
     padding: 0;
+
     box-sizing: border-box;
+
 }
 
 
@@ -15,26 +19,31 @@
 
 html,
 body {
+
     width: 100%;
+
     height: 100%;
 
     overflow: hidden;
 
     background: #d9d9d9;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     overscroll-behavior: none;
 
     -webkit-user-select: none;
+
     user-select: none;
 
-    -webkit-touch-callout: none;
 }
 
 
 /* =========================================================
-   VISOR PRINCIPAL
+   VISOR
 ========================================================= */
 
 .viewer {
@@ -44,35 +53,35 @@ body {
     inset: 0;
 
     width: 100vw;
+
     height: 100vh;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
 
-    overflow: hidden;
+    justify-content: center;
 
-    background: #d9d9d9;
+    overflow: hidden;
 
 }
 
 
 /* =========================================================
-   CONTENEDOR DEL LIBRO
+   CONTENEDOR ZOOM
 ========================================================= */
 
 #zoomContainer {
 
-    position: relative;
-
     width: 100vw;
+
     height: 100vh;
 
     display: flex;
 
-    justify-content: center;
     align-items: center;
+
+    justify-content: center;
 
     overflow: hidden;
 
@@ -87,20 +96,11 @@ body {
 
 #book {
 
-    #book {
-
     position: relative;
-
-    width: auto;
-
-    height: 88vh;
-
-    aspect-ratio: 900 / 1273;
 
     transform-origin: center center;
 
     will-change: transform;
-
 
 }
 
@@ -117,34 +117,19 @@ body {
 
     display: flex;
 
-    justify-content: center;
-
     align-items: center;
+
+    justify-content: center;
 
 }
 
-
-/* Canvas renderizado por PDF.js */
 
 .page canvas {
 
     display: block;
 
     width: 100%;
-    height: 100%;
 
-    object-fit: contain;
-
-}
-
-
-/* Por compatibilidad si alguna página utiliza IMG */
-
-.page img {
-
-    display: block;
-
-    width: 100%;
     height: 100%;
 
     object-fit: contain;
@@ -165,50 +150,31 @@ body {
     transform: translateY(-50%);
 
     width: 68px;
+
     height: 68px;
 
     border: none;
 
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.96);
+    background: #ffffff;
 
-    color: #333;
+    color: #222222;
 
     font-size: 32px;
 
-    line-height: 1;
+    cursor: pointer;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    cursor: pointer;
-
     box-shadow:
-        0 4px 18px rgba(0, 0, 0, 0.22);
+        0 5px 20px rgba(0,0,0,.25);
 
     z-index: 5000;
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        opacity 0.2s ease;
-
-    -webkit-tap-highlight-color: transparent;
-
-}
-
-
-.nav:hover {
-
-    transform:
-        translateY(-50%)
-        scale(1.07);
-
-    box-shadow:
-        0 6px 22px rgba(0, 0, 0, 0.28);
 
 }
 
@@ -217,7 +183,7 @@ body {
 
     transform:
         translateY(-50%)
-        scale(0.94);
+        scale(.94);
 
 }
 
@@ -237,7 +203,7 @@ body {
 
 
 /* =========================================================
-   BARRA INFERIOR
+   TOOLBAR
 ========================================================= */
 
 .toolbar {
@@ -246,11 +212,13 @@ body {
 
     left: 50%;
 
-    bottom: max(16px, env(safe-area-inset-bottom));
+    bottom:
+        max(
+            15px,
+            env(safe-area-inset-bottom)
+        );
 
     transform: translateX(-50%);
-
-    min-height: 76px;
 
     display: flex;
 
@@ -262,12 +230,14 @@ body {
 
     padding: 9px 14px;
 
-    background: rgba(255, 255, 255, 0.97);
+    min-height: 72px;
+
+    background: #ffffff;
 
     border-radius: 45px;
 
     box-shadow:
-        0 6px 25px rgba(0, 0, 0, 0.22);
+        0 7px 25px rgba(0,0,0,.22);
 
     z-index: 10000;
 
@@ -275,12 +245,12 @@ body {
 
 
 /* =========================================================
-   INFORMACIÓN DE PÁGINA
+   CONTADOR
 ========================================================= */
 
 #pageInfo {
 
-    min-width: 80px;
+    min-width: 75px;
 
     text-align: center;
 
@@ -288,20 +258,19 @@ body {
 
     font-weight: bold;
 
-    color: #333;
-
-    white-space: nowrap;
+    color: #222222;
 
 }
 
 
 /* =========================================================
-   BOTONES DE ZOOM
+   ZOOM
 ========================================================= */
 
 .zoomBtn {
 
     width: 58px;
+
     height: 58px;
 
     border: none;
@@ -314,41 +283,20 @@ body {
 
     font-size: 35px;
 
-    font-weight: normal;
-
-    line-height: 1;
+    cursor: pointer;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.18);
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-
-    -webkit-tap-highlight-color: transparent;
-
-}
-
-
-.zoomBtn:hover {
-
-    background: #2ca6dc;
-
-    transform: scale(1.07);
 
 }
 
 
 .zoomBtn:active {
 
-    transform: scale(0.92);
+    transform: scale(.92);
 
 }
 
@@ -360,25 +308,24 @@ body {
 .ultima {
 
     width: 100%;
+
     height: 100%;
 
     display: flex;
 
     flex-direction: column;
 
-    justify-content: center;
-
     align-items: center;
 
-    gap: 18px;
+    justify-content: center;
 
-    padding: 30px;
+    gap: 18px;
 
 }
 
 
 /* =========================================================
-   BOTÓN INSCRIBIRME
+   INSCRIBIRME
 ========================================================= */
 
 .btn-priit {
@@ -386,11 +333,12 @@ body {
     display: inline-flex;
 
     align-items: center;
+
     justify-content: center;
 
     background: #42B6E8;
 
-    color: #ffffff;
+    color: white;
 
     text-decoration: none;
 
@@ -400,31 +348,13 @@ body {
 
     padding: 17px 45px;
 
-    min-width: 230px;
-
     border-radius: 12px;
-
-    box-shadow:
-        0 4px 14px rgba(66, 182, 232, 0.30);
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
-
-}
-
-
-.btn-priit:hover {
-
-    background: #2ca6dc;
-
-    transform: scale(1.04);
 
 }
 
 
 /* =========================================================
-   BOTÓN DESCARGAR PDF
+   DESCARGAR
 ========================================================= */
 
 .btn-download {
@@ -432,9 +362,10 @@ body {
     display: inline-flex;
 
     align-items: center;
+
     justify-content: center;
 
-    background: #ffffff;
+    background: white;
 
     color: #42B6E8;
 
@@ -448,111 +379,84 @@ body {
 
     padding: 10px 24px;
 
-    min-width: 170px;
-
     border-radius: 30px;
 
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        color 0.2s ease;
-
-}
-
-
-.btn-download:hover {
-
-    background: #42B6E8;
-
-    color: #ffffff;
-
-    transform: scale(1.04);
-
 }
 
 
 /* =========================================================
-   ESCRITORIO
+   CELULAR VERTICAL
+   UNA PÁGINA
 ========================================================= */
 
-@media (min-width: 901px) {
+@media
+(max-width: 900px)
+and
+(orientation: portrait) {
 
     #book {
 
-        width: 94vw;
+        height: 78vh;
 
-        height: 92vh;
+        width: auto;
 
-    }
-
-}
-
-
-/* =========================================================
-   TABLET / CELULAR
-========================================================= */
-
-@media (max-width: 900px) {
-
-    #book {
-
-        width: 100vw;
-
-        height: 100vh;
+        aspect-ratio: 900 / 1273;
 
     }
 
 
     .nav {
 
-        width: 58px;
-        height: 58px;
+        width: 54px;
 
-        font-size: 27px;
+        height: 54px;
+
+        font-size: 26px;
 
     }
 
 
     #prev {
 
-        left: 10px;
+        left: 8px;
 
     }
 
 
     #next {
 
-        right: 10px;
+        right: 8px;
 
     }
 
 
     .toolbar {
 
-        min-height: 68px;
+        min-height: 62px;
 
-        gap: 13px;
+        gap: 10px;
 
-        padding: 7px 11px;
+        padding: 6px 10px;
 
-        bottom: max(10px, env(safe-area-inset-bottom));
+        bottom: 10px;
 
     }
 
 
     .zoomBtn {
 
-        width: 54px;
-        height: 54px;
+        width: 52px;
 
-        font-size: 32px;
+        height: 52px;
+
+        font-size: 30px;
 
     }
 
 
     #pageInfo {
 
-        min-width: 65px;
+        min-width: 62px;
 
         font-size: 15px;
 
@@ -563,22 +467,21 @@ body {
 
 /* =========================================================
    CELULAR HORIZONTAL
+   DOS PÁGINAS
 ========================================================= */
 
-@media (max-width: 900px) and (orientation: landscape) {
-
-    #zoomContainer {
-
-        width: 100vw;
-        height: 100vh;
-
-    }
-
+@media
+(max-width: 900px)
+and
+(orientation: landscape) {
 
     #book {
 
-        width: 100vw;
-        height: 100vh;
+        height: 82vh;
+
+        width: auto;
+
+        aspect-ratio: 1800 / 1273;
 
     }
 
@@ -586,6 +489,7 @@ body {
     .nav {
 
         width: 52px;
+
         height: 52px;
 
         font-size: 25px;
@@ -609,103 +513,33 @@ body {
 
     .toolbar {
 
-        min-height: 58px;
+        min-height: 54px;
 
-        gap: 10px;
+        gap: 9px;
 
         padding: 5px 9px;
 
-        bottom: 8px;
+        bottom: 7px;
 
     }
 
 
     .zoomBtn {
 
-        width: 46px;
-        height: 46px;
+        width: 44px;
 
-        font-size: 28px;
+        height: 44px;
+
+        font-size: 27px;
 
     }
 
 
     #pageInfo {
 
-        min-width: 58px;
+        min-width: 55px;
 
-        font-size: 14px;
-
-    }
-
-}
-
-
-/* =========================================================
-   CELULAR VERTICAL
-========================================================= */
-
-@media (max-width: 600px) and (orientation: portrait) {
-
-    .nav {
-
-        width: 54px;
-        height: 54px;
-
-        font-size: 25px;
-
-    }
-
-
-    #prev {
-
-        left: 7px;
-
-    }
-
-
-    #next {
-
-        right: 7px;
-
-    }
-
-
-    .toolbar {
-
-        gap: 10px;
-
-    }
-
-
-    .zoomBtn {
-
-        width: 52px;
-        height: 52px;
-
-        font-size: 30px;
-
-    }
-
-
-    .btn-priit {
-
-        font-size: 20px;
-
-        padding: 15px 32px;
-
-        min-width: 200px;
-
-    }
-
-
-    .btn-download {
-
-        font-size: 14px;
-
-        padding: 9px 20px;
-
-        min-width: 155px;
+        font-size: 13px;
 
     }
 
@@ -713,49 +547,17 @@ body {
 
 
 /* =========================================================
-   DISPOSITIVOS CON NOTCH
+   PC
+   DOS PÁGINAS
 ========================================================= */
 
-@supports (padding: env(safe-area-inset-top)) {
+@media (min-width: 901px) {
 
-    .viewer {
+    #book {
 
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-        padding-left: env(safe-area-inset-left);
-        padding-right: env(safe-area-inset-right);
+        width: 90vw;
 
-    }
-
-}
-
-
-/* =========================================================
-   EVITAR SELECCIÓN / ARRASTRE
-========================================================= */
-
-button,
-a,
-canvas,
-img {
-
-    -webkit-user-drag: none;
-
-}
-
-
-/* =========================================================
-   REDUCIR ANIMACIONES SI EL USUARIO LO PIDE
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .nav,
-    .zoomBtn,
-    .btn-priit,
-    .btn-download {
-
-        transition: none;
+        height: 82vh;
 
     }
 
