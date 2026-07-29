@@ -1,5 +1,5 @@
 /* =========================================================
-   PRIIT FLIPBOOK - SCRIPT
+   PRIIT FLIPBOOK
 ========================================================= */
 
 
@@ -7,35 +7,42 @@
    CONFIGURACIÓN
 ========================================================= */
 
-const PDF_URL = "assets/006_folletopriit.pdf";
+const PDF_URL =
+    "assets/006_folletopriit.pdf";
 
-const MAX_ZOOM = 3;
 
-const MIN_ZOOM = 1;
+const PDF_WIDTH = 900;
 
-const ZOOM_STEP = 0.2;
+const PDF_HEIGHT = 1273;
 
 
 /* =========================================================
    ELEMENTOS
 ========================================================= */
 
-const book = document.getElementById("book");
+const book =
+    document.getElementById("book");
+
 
 const zoomContainer =
     document.getElementById("zoomContainer");
 
+
 const pageInfo =
     document.getElementById("pageInfo");
+
 
 const nextButton =
     document.getElementById("next");
 
+
 const prevButton =
     document.getElementById("prev");
 
+
 const zoomInButton =
     document.getElementById("zoomIn");
+
 
 const zoomOutButton =
     document.getElementById("zoomOut");
@@ -47,11 +54,92 @@ const zoomOutButton =
 
 let flip = null;
 
+let pages = [];
+
 let zoom = 1;
 
 let pinchStartDistance = null;
 
 let pinchStartZoom = 1;
+
+
+/* =========================================================
+   DETECTAR ORIENTACIÓN
+========================================================= */
+
+function esMovil() {
+
+    return window.innerWidth <= 900;
+
+}
+
+
+function estaHorizontal() {
+
+    return window.innerWidth >
+        window.innerHeight;
+
+}
+
+
+/* =========================================================
+   CONFIGURAR TAMAÑO
+========================================================= */
+
+function configurarTamanio() {
+
+    if (!book)
+        return;
+
+
+    /* ================================================
+       CELULAR VERTICAL
+       UNA PÁGINA
+    ================================================ */
+
+    if (
+        esMovil() &&
+        !estaHorizontal()
+    ) {
+
+        book.style.height = "78vh";
+
+        book.style.width = "auto";
+
+        return;
+
+    }
+
+
+    /* ================================================
+       CELULAR HORIZONTAL
+       DOS PÁGINAS
+    ================================================ */
+
+    if (
+        esMovil() &&
+        estaHorizontal()
+    ) {
+
+        book.style.height = "82vh";
+
+        book.style.width = "auto";
+
+        return;
+
+    }
+
+
+    /* ================================================
+       PC
+       DOS PÁGINAS
+    ================================================ */
+
+    book.style.width = "90vw";
+
+    book.style.height = "82vh";
+
+}
 
 
 /* =========================================================
@@ -62,7 +150,8 @@ async function cargarPDF() {
 
     try {
 
-        pageInfo.textContent = "Cargando...";
+        pageInfo.textContent =
+            "Cargando...";
 
 
         const PDF =
@@ -71,11 +160,11 @@ async function cargarPDF() {
                 .promise;
 
 
-        const pages = [];
+        pages = [];
 
 
         /* =================================================
-           CREAR PÁGINAS DEL PDF
+           CREAR PÁGINAS
         ================================================= */
 
         for (
@@ -95,65 +184,87 @@ async function cargarPDF() {
 
 
             const canvas =
-                document.createElement("canvas");
+                document.createElement(
+                    "canvas"
+                );
 
 
             const context =
-                canvas.getContext("2d", {
-                    alpha: false
-                });
+                canvas.getContext(
+                    "2d",
+                    {
+                        alpha: false
+                    }
+                );
 
 
             canvas.width =
-                Math.ceil(viewport.width);
+                Math.ceil(
+                    viewport.width
+                );
 
 
             canvas.height =
-                Math.ceil(viewport.height);
+                Math.ceil(
+                    viewport.height
+                );
 
 
-            canvas.style.width = "100%";
+            canvas.style.width =
+                "100%";
 
-            canvas.style.height = "100%";
 
-            canvas.style.objectFit = "contain";
+            canvas.style.height =
+                "100%";
 
-            canvas.draggable = false;
+
+            canvas.draggable =
+                false;
 
 
             await page.render({
 
-                canvasContext: context,
+                canvasContext:
+                    context,
 
-                viewport: viewport
+                viewport:
+                    viewport
 
             }).promise;
 
 
-            const pageDiv =
-                document.createElement("div");
+            const div =
+                document.createElement(
+                    "div"
+                );
 
 
-            pageDiv.className = "page";
+            div.className =
+                "page";
 
 
-            pageDiv.appendChild(canvas);
+            div.appendChild(
+                canvas
+            );
 
 
-            pages.push(pageDiv);
+            pages.push(div);
 
         }
 
 
         /* =================================================
-           ÚLTIMA PÁGINA PERSONALIZADA
+           ÚLTIMA PÁGINA
         ================================================= */
 
         const ultima =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
-        ultima.className = "page";
+        ultima.className =
+            "page";
 
 
         ultima.innerHTML = `
@@ -183,110 +294,133 @@ async function cargarPDF() {
         `;
 
 
-        pages.push(ultima);
-
-
-        /* =================================================
-           CONFIGURACIÓN PAGEFLIP
-        ================================================= */
-
-        flip = new St.PageFlip(
-
-            book,
-
-            {
-
-                flip = new St.PageFlip(
-    book,
-    {
-        width: 900,
-        height: 1273,
-
-        size: "fixed",
-
-        showCover: false,
-
-        autoSize: false,
-
-        usePortrait: true,
-
-        mobileScrollSupport: false,
-
-        maxShadowOpacity: 0.25,
-
-        flippingTime: 700,
-
-        drawShadow: true,
-
-        startPage: 0
-    }
-
+        pages.push(
+            ultima
         );
 
 
         /* =================================================
-           CARGAR PÁGINAS
+           TAMAÑO INICIAL
         ================================================= */
 
-        flip.loadFromHTML(pages);
+        configurarTamanio();
 
 
         /* =================================================
-           CONTADOR INICIAL
+           PAGEFLIP
         ================================================= */
 
-        actualizarContador(0, pages.length);
+        flip =
+            new St.PageFlip(
+                book,
+                {
 
+                    width:
+                        PDF_WIDTH,
 
-        /* =================================================
-           EVENTO CAMBIO DE PÁGINA
-        ================================================= */
+                    height:
+                        PDF_HEIGHT,
 
-        flip.on("flip", event => {
+                    size:
+                        "stretch",
 
-            actualizarContador(
-                event.data,
-                pages.length
+                    minWidth:
+                        280,
+
+                    maxWidth:
+                        1800,
+
+                    minHeight:
+                        396,
+
+                    maxHeight:
+                        2546,
+
+                    showCover:
+                        false,
+
+                    maxShadowOpacity:
+                        0.25,
+
+                    flippingTime:
+                        700,
+
+                    drawShadow:
+                        true,
+
+                    usePortrait:
+                        true,
+
+                    autoSize:
+                        false,
+
+                    mobileScrollSupport:
+                        false,
+
+                    startPage:
+                        0
+
+                }
             );
 
 
-            /*
-             * Evita que el navegador
-             * intente desplazar la página.
-             */
+        /* =================================================
+           CARGAR
+        ================================================= */
 
-            requestAnimationFrame(() => {
+        flip.loadFromHTML(
+            pages
+        );
 
-                window.scrollTo(0, 0);
 
-            });
-
-        });
+        actualizarContador(
+            0
+        );
 
 
         /* =================================================
-           FINALIZAR CARGA
+           CAMBIO DE PÁGINA
         ================================================= */
 
-        requestAnimationFrame(() => {
+        flip.on(
+            "flip",
+            event => {
 
-            window.scrollTo(0, 0);
-
-            aplicarZoom();
-
-        });
+                actualizarContador(
+                    event.data
+                );
 
 
-    } catch (error) {
+                requestAnimationFrame(
+                    () => {
+
+                        window.scrollTo(
+                            0,
+                            0
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        aplicarZoom();
+
+
+    }
+
+    catch (error) {
 
         console.error(
-            "Error cargando el PDF:",
+            "Error cargando PDF:",
             error
         );
 
 
         pageInfo.textContent =
-            "Error al cargar";
+            "Error";
 
     }
 
@@ -298,22 +432,58 @@ async function cargarPDF() {
 ========================================================= */
 
 function actualizarContador(
-    pagina,
-    total
+    pagina
 ) {
 
-    pageInfo.textContent =
-        `${pagina + 1} / ${total}`;
+    if (!flip)
+        return;
+
+
+    const paginaActual =
+        pagina + 1;
+
+
+    /*
+     * En horizontal se muestran
+     * dos páginas.
+     */
+
+    if (
+        esMovil() &&
+        estaHorizontal()
+    ) {
+
+        const total =
+            pages.length;
+
+
+        const segunda =
+            Math.min(
+                paginaActual + 1,
+                total
+            );
+
+
+        pageInfo.textContent =
+            `${paginaActual}-${segunda} / ${total}`;
+
+    }
+
+    else {
+
+        pageInfo.textContent =
+            `${paginaActual} / ${pages.length}`;
+
+    }
 
 }
 
 
 /* =========================================================
-   NAVEGACIÓN
+   BOTÓN SIGUIENTE
 ========================================================= */
 
-nextButton.addEventListener(
-    "click",
+nextButton.onclick =
     () => {
 
         if (!flip)
@@ -322,12 +492,14 @@ nextButton.addEventListener(
 
         flip.flipNext();
 
-    }
-);
+    };
 
 
-prevButton.addEventListener(
-    "click",
+/* =========================================================
+   BOTÓN ANTERIOR
+========================================================= */
+
+prevButton.onclick =
     () => {
 
         if (!flip)
@@ -336,37 +508,24 @@ prevButton.addEventListener(
 
         flip.flipPrev();
 
-    }
-);
+    };
 
 
 /* =========================================================
    ZOOM
 ========================================================= */
 
-function limitarZoom(valor) {
-
-    return Math.max(
-        MIN_ZOOM,
-        Math.min(
-            MAX_ZOOM,
-            valor
-        )
-    );
-
-}
-
-
 function aplicarZoom() {
 
     zoom =
-        limitarZoom(zoom);
+        Math.max(
+            1,
+            Math.min(
+                3,
+                zoom
+            )
+        );
 
-
-    /*
-     * El zoom se aplica únicamente
-     * visualmente al libro.
-     */
 
     book.style.transform =
         `scale(${zoom})`;
@@ -378,55 +537,37 @@ function aplicarZoom() {
    ZOOM +
 ========================================================= */
 
-zoomInButton.addEventListener(
-    "click",
+zoomInButton.onclick =
     () => {
 
-        zoom =
-            limitarZoom(
-                zoom + ZOOM_STEP
-            );
-
+        zoom += 0.2;
 
         aplicarZoom();
 
-    }
-);
+    };
 
 
 /* =========================================================
    ZOOM -
 ========================================================= */
 
-zoomOutButton.addEventListener(
-    "click",
+zoomOutButton.onclick =
     () => {
 
-        zoom =
-            limitarZoom(
-                zoom - ZOOM_STEP
-            );
-
+        zoom -= 0.2;
 
         aplicarZoom();
 
-    }
-);
+    };
 
 
 /* =========================================================
-   ZOOM CON CTRL + RUEDA
+   CTRL + RUEDA
 ========================================================= */
 
 zoomContainer.addEventListener(
     "wheel",
     event => {
-
-        /*
-         * En computadora solamente
-         * hacemos zoom cuando se mantiene
-         * presionado CTRL.
-         */
 
         if (!event.ctrlKey)
             return;
@@ -435,19 +576,18 @@ zoomContainer.addEventListener(
         event.preventDefault();
 
 
-        if (event.deltaY < 0) {
+        if (
+            event.deltaY < 0
+        ) {
 
             zoom += 0.1;
 
-        } else {
+        }
+        else {
 
             zoom -= 0.1;
 
         }
-
-
-        zoom =
-            limitarZoom(zoom);
 
 
         aplicarZoom();
@@ -460,30 +600,34 @@ zoomContainer.addEventListener(
 
 
 /* =========================================================
-   DISTANCIA ENTRE DOS DEDOS
+   DISTANCIA DE PINZA
 ========================================================= */
 
-function obtenerDistancia(touch1, touch2) {
+function distancia(
+    a,
+    b
+) {
 
     const x =
-        touch1.clientX -
-        touch2.clientX;
+        a.clientX -
+        b.clientX;
 
 
     const y =
-        touch1.clientY -
-        touch2.clientY;
+        a.clientY -
+        b.clientY;
 
 
     return Math.sqrt(
-        x * x + y * y
+        x * x +
+        y * y
     );
 
 }
 
 
 /* =========================================================
-   PINZA - TOUCHSTART
+   PINZA - INICIO
 ========================================================= */
 
 zoomContainer.addEventListener(
@@ -492,15 +636,12 @@ zoomContainer.addEventListener(
 
         if (
             event.touches.length !== 2
-        ) {
-
+        )
             return;
-
-        }
 
 
         pinchStartDistance =
-            obtenerDistancia(
+            distancia(
                 event.touches[0],
                 event.touches[1]
             );
@@ -517,7 +658,7 @@ zoomContainer.addEventListener(
 
 
 /* =========================================================
-   PINZA - TOUCHMOVE
+   PINZA - MOVIMIENTO
 ========================================================= */
 
 zoomContainer.addEventListener(
@@ -526,11 +667,8 @@ zoomContainer.addEventListener(
 
         if (
             event.touches.length !== 2
-        ) {
-
+        )
             return;
-
-        }
 
 
         event.preventDefault();
@@ -538,29 +676,25 @@ zoomContainer.addEventListener(
 
         if (
             pinchStartDistance === null
-        ) {
-
+        )
             return;
 
-        }
 
-
-        const currentDistance =
-            obtenerDistancia(
+        const actual =
+            distancia(
                 event.touches[0],
                 event.touches[1]
             );
 
 
         const factor =
-            currentDistance /
+            actual /
             pinchStartDistance;
 
 
         zoom =
-            limitarZoom(
-                pinchStartZoom * factor
-            );
+            pinchStartZoom *
+            factor;
 
 
         aplicarZoom();
@@ -573,7 +707,7 @@ zoomContainer.addEventListener(
 
 
 /* =========================================================
-   PINZA - TOUCHEND
+   PINZA - FIN
 ========================================================= */
 
 zoomContainer.addEventListener(
@@ -584,7 +718,8 @@ zoomContainer.addEventListener(
             event.touches.length < 2
         ) {
 
-            pinchStartDistance = null;
+            pinchStartDistance =
+                null;
 
         }
 
@@ -593,17 +728,59 @@ zoomContainer.addEventListener(
 
 
 /* =========================================================
-   EVITAR SCROLL DEL BODY
+   CAMBIO DE ORIENTACIÓN
+========================================================= */
+
+let resizeTimer;
+
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        clearTimeout(
+            resizeTimer
+        );
+
+
+        resizeTimer =
+            setTimeout(
+                () => {
+
+                    configurarTamanio();
+
+
+                    /*
+                     * Volvemos a 1x cuando
+                     * cambia vertical/horizontal.
+                     */
+
+                    zoom = 1;
+
+                    aplicarZoom();
+
+
+                    if (flip) {
+
+                        flip.update();
+
+                    }
+
+                },
+                250
+            );
+
+    }
+);
+
+
+/* =========================================================
+   EVITAR SCROLL
 ========================================================= */
 
 document.addEventListener(
     "touchmove",
     event => {
-
-        /*
-         * Cuando se está usando una pinza,
-         * impedimos el scroll del navegador.
-         */
 
         if (
             event.touches.length >= 2
@@ -621,149 +798,9 @@ document.addEventListener(
 
 
 /* =========================================================
-   EVITAR SCROLL AUTOMÁTICO
-========================================================= */
-
-window.addEventListener(
-    "scroll",
-    () => {
-
-        if (
-            window.scrollY !== 0
-        ) {
-
-            window.scrollTo(
-                0,
-                0
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   CAMBIO DE TAMAÑO DE VENTANA
-========================================================= */
-
-let resizeTimer = null;
-
-
-window.addEventListener(
-    "resize",
-    () => {
-
-        clearTimeout(
-            resizeTimer
-        );
-
-
-        resizeTimer =
-            setTimeout(
-                () => {
-
-                    if (!flip)
-                        return;
-
-
-                    /*
-                     * Volvemos a aplicar
-                     * únicamente el zoom visual.
-                     */
-
-                    aplicarZoom();
-
-
-                    window.scrollTo(
-                        0,
-                        0
-                    );
-
-                },
-                150
-            );
-
-    }
-);
-
-
-/* =========================================================
-   DOBLE CLICK / DOBLE TAP
-========================================================= */
-
-let lastTap = 0;
-
-
-zoomContainer.addEventListener(
-    "touchend",
-    event => {
-
-        /*
-         * No activar doble tap durante
-         * un gesto de dos dedos.
-         */
-
-        if (
-            event.changedTouches.length !== 1
-        ) {
-
-            return;
-
-        }
-
-
-        const now =
-            Date.now();
-
-
-        if (
-            now - lastTap < 300
-        ) {
-
-            /*
-             * Doble toque:
-             * alterna entre 1x y 2x.
-             */
-
-            if (zoom === 1) {
-
-                zoom = 2;
-
-            } else {
-
-                zoom = 1;
-
-            }
-
-
-            aplicarZoom();
-
-        }
-
-
-        lastTap = now;
-
-    }
-);
-
-
-/* =========================================================
-   DESACTIVAR MENÚ CONTEXTUAL SOBRE EL LIBRO
-========================================================= */
-
-book.addEventListener(
-    "contextmenu",
-    event => {
-
-        event.preventDefault();
-
-    }
-);
-
-
-/* =========================================================
    INICIO
 ========================================================= */
+
+configurarTamanio();
 
 cargarPDF();
