@@ -196,29 +196,30 @@ async function cargarPDF() {
 
             {
 
-                width: 900,
+                flip = new St.PageFlip(
+    book,
+    {
+        width: 900,
+        height: 1273,
 
-                height: 1273,
+        size: "fixed",
 
-                size: "fixed",
+        showCover: false,
 
-                showCover: false,
+        autoSize: false,
 
-                autoSize: true,
+        usePortrait: true,
 
-                usePortrait: true,
+        mobileScrollSupport: false,
 
-                mobileScrollSupport: false,
+        maxShadowOpacity: 0.25,
 
-                maxShadowOpacity: 0.25,
+        flippingTime: 700,
 
-                flippingTime: 700,
+        drawShadow: true,
 
-                drawShadow: true,
-
-                startPage: 0
-
-            }
+        startPage: 0
+    }
 
         );
 
