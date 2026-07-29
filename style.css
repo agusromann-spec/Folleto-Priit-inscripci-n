@@ -1,613 +1,756 @@
-/* ===========================
+/* =========================================================
    RESET
-=========================== */
+========================================================= */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+
+/* =========================================================
+   HTML / BODY
+========================================================= */
 
 html,
-body{
+body {
+    width: 100%;
+    height: 100%;
 
-    width:100%;
-    height:100%;
+    overflow: hidden;
 
-    overflow:hidden;
+    background: #d9d9d9;
 
-    background:#d9d9d9;
+    font-family: Arial, Helvetica, sans-serif;
 
-    font-family:Arial,Helvetica,sans-serif;
+    overscroll-behavior: none;
 
-    overscroll-behavior:none;
+    -webkit-user-select: none;
+    user-select: none;
 
-    -webkit-user-select:none;
-    user-select:none;
-
+    -webkit-touch-callout: none;
 }
 
 
-
-/* ===========================
+/* =========================================================
    VISOR PRINCIPAL
-=========================== */
+========================================================= */
 
-.viewer{
+.viewer {
 
-    position:fixed;
+    position: fixed;
 
-    inset:0;
+    inset: 0;
 
-    padding-bottom:90px;
+    width: 100vw;
+    height: 100vh;
 
-    display:flex;
+    display: flex;
 
-    justify-content:center;
+    justify-content: center;
+    align-items: center;
 
-    align-items:center;
+    overflow: hidden;
 
-    overflow:hidden;
-
-}
-
-
-
-/* ===========================
-   CONTENEDOR ZOOM
-=========================== */
-
-#zoomContainer{
-
-    width:100vw;
-
-    height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    overflow:hidden;
-
-    touch-action:none;
+    background: #d9d9d9;
 
 }
 
 
+/* =========================================================
+   CONTENEDOR DEL LIBRO
+========================================================= */
 
-/* ===========================
+#zoomContainer {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    touch-action: none;
+
+}
+
+
+/* =========================================================
    LIBRO
-=========================== */
+========================================================= */
 
-#book{
+#book {
 
-    width:95vw;
+    position: relative;
 
-    height:90vh;
+    width: 94vw;
+    height: 92vh;
 
-    transform-origin:center center;
+    transform-origin: center center;
 
-    transition:transform .25s ease;
-
-    will-change:transform;
-
-}
-
-
-
-/* ===========================
-   PAGINAS
-=========================== */
-
-
-.page{
-
-    background:white;
-
-    overflow:hidden;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
+    will-change: transform;
 
 }
 
 
-.page img{
+/* =========================================================
+   PÁGINAS
+========================================================= */
 
-    width:100%;
+.page {
 
-    height:100%;
+    background: #ffffff;
 
-    object-fit:contain;
+    overflow: hidden;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
 
 }
 
 
+/* Canvas renderizado por PDF.js */
 
-/* ===========================
-   NAVEGACION
-=========================== */
+.page canvas {
 
+    display: block;
 
-.nav{
+    width: 100%;
+    height: 100%;
 
-    position:fixed;
+    object-fit: contain;
 
-    top:50%;
-
-    transform:translateY(-50%);
-
-
-    width:65px;
-
-    height:65px;
+}
 
 
-    border:none;
+/* Por compatibilidad si alguna página utiliza IMG */
 
-    border-radius:50%;
+.page img {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+}
 
 
-    background:white;
+/* =========================================================
+   BOTONES LATERALES
+========================================================= */
 
+.nav {
 
-    cursor:pointer;
+    position: fixed;
 
+    top: 50%;
 
-    font-size:32px;
+    transform: translateY(-50%);
 
+    width: 68px;
+    height: 68px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    color: #333;
+
+    font-size: 32px;
+
+    line-height: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
 
     box-shadow:
-    0 5px 20px rgba(0,0,0,.25);
+        0 4px 18px rgba(0, 0, 0, 0.22);
 
+    z-index: 5000;
 
-    z-index:999;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
 
-
-    transition:.2s;
+    -webkit-tap-highlight-color: transparent;
 
 }
 
 
-.nav:hover{
+.nav:hover {
 
     transform:
-    translateY(-50%)
-    scale(1.08);
-
-}
-
-
-
-#prev{
-
-    left:20px;
-
-}
-
-
-#next{
-
-    right:20px;
-
-}
-
-
-
-
-/* ===========================
-   TOOLBAR
-=========================== */
-
-
-.toolbar{
-
-
-    position:fixed;
-
-
-    left:50%;
-
-
-    bottom:
-    calc(15px + env(safe-area-inset-bottom));
-
-
-    transform:translateX(-50%);
-
-
-
-    display:flex;
-
-
-    align-items:center;
-
-
-    gap:18px;
-
-
-
-    background:white;
-
-
-
-    padding:12px 20px;
-
-
-
-    border-radius:45px;
-
-
+        translateY(-50%)
+        scale(1.07);
 
     box-shadow:
-    0 8px 25px rgba(0,0,0,.25);
-
-
-
-    z-index:9999;
+        0 6px 22px rgba(0, 0, 0, 0.28);
 
 }
 
 
+.nav:active {
 
-#pageInfo{
-
-    min-width:80px;
-
-    text-align:center;
-
-    font-size:17px;
-
-    font-weight:bold;
+    transform:
+        translateY(-50%)
+        scale(0.94);
 
 }
 
 
+#prev {
 
-
-/* ===========================
-   BOTONES ZOOM
-=========================== */
-
-
-.zoomBtn{
-
-
-    width:55px;
-
-    height:55px;
-
-
-
-    border:none;
-
-
-    border-radius:50%;
-
-
-
-    background:#42B6E8;
-
-
-
-    color:white;
-
-
-
-    font-size:34px;
-
-
-
-    cursor:pointer;
-
-
-
-    transition:.2s;
+    left: 20px;
 
 }
 
 
+#next {
 
-.zoomBtn:hover{
-
-    transform:scale(1.08);
-
-    background:#2ca6dc;
+    right: 20px;
 
 }
 
 
+/* =========================================================
+   BARRA INFERIOR
+========================================================= */
 
+.toolbar {
 
+    position: fixed;
 
-/* ===========================
-   BOTON DESCARGAR
-=========================== */
+    left: 50%;
 
+    bottom: max(16px, env(safe-area-inset-bottom));
 
-.btn-download,
-#downloadPDF{
+    transform: translateX(-50%);
 
+    min-height: 76px;
 
-    background:white;
+    display: flex;
 
+    align-items: center;
 
-    color:#42B6E8;
+    justify-content: center;
 
+    gap: 18px;
 
+    padding: 9px 14px;
 
-    border:2px solid #42B6E8;
+    background: rgba(255, 255, 255, 0.97);
 
+    border-radius: 45px;
 
+    box-shadow:
+        0 6px 25px rgba(0, 0, 0, 0.22);
 
-    padding:12px 25px;
-
-
-
-    border-radius:30px;
-
-
-
-    font-weight:bold;
-
-
-
-    cursor:pointer;
-
-
-
-    text-decoration:none;
-
-
+    z-index: 10000;
 
 }
 
 
+/* =========================================================
+   INFORMACIÓN DE PÁGINA
+========================================================= */
 
-.btn-download:hover,
-#downloadPDF:hover{
+#pageInfo {
 
+    min-width: 80px;
 
-    background:#42B6E8;
+    text-align: center;
 
+    font-size: 17px;
 
-    color:white;
+    font-weight: bold;
 
+    color: #333;
 
-}
-
-
-
-
-/* ===========================
-   ULTIMA PAGINA
-=========================== */
-
-
-.ultima{
-
-
-    width:100%;
-
-
-    height:100%;
-
-
-    display:flex;
-
-
-    flex-direction:column;
-
-
-    justify-content:center;
-
-
-    align-items:center;
-
-
-    gap:20px;
-
+    white-space: nowrap;
 
 }
 
 
+/* =========================================================
+   BOTONES DE ZOOM
+========================================================= */
 
-.btn-priit{
+.zoomBtn {
 
+    width: 58px;
+    height: 58px;
 
-    background:#42B6E8;
+    border: none;
 
+    border-radius: 50%;
 
-    color:white;
+    background: #42B6E8;
 
+    color: #ffffff;
 
-    text-decoration:none;
+    font-size: 35px;
 
+    font-weight: normal;
 
-    font-size:24px;
+    line-height: 1;
 
+    display: flex;
 
-    font-weight:bold;
+    align-items: center;
+    justify-content: center;
 
+    cursor: pointer;
 
-    padding:18px 45px;
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.18);
 
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
 
-    border-radius:12px;
-
-
-}
-
-
-
-.btn-priit:hover{
-
-
-    background:#2ca6dc;
-
-
-}
-
-
-
-
-/* ===========================
-   CELULAR
-=========================== */
-
-
-@media(max-width:900px){
-
-
-
-.viewer{
-
-
-    padding-bottom:70px;
-
+    -webkit-tap-highlight-color: transparent;
 
 }
 
 
+.zoomBtn:hover {
 
+    background: #2ca6dc;
 
-#book{
-
-
-    width:100vw;
-
-
-    height:85vh;
-
+    transform: scale(1.07);
 
 }
 
 
+.zoomBtn:active {
 
-.nav{
-
-
-    width:55px;
-
-
-    height:55px;
-
-
-    font-size:26px;
-
+    transform: scale(0.92);
 
 }
 
 
+/* =========================================================
+   ÚLTIMA PÁGINA
+========================================================= */
 
-#prev{
+.ultima {
 
-    left:8px;
+    width: 100%;
+    height: 100%;
 
-}
+    display: flex;
 
+    flex-direction: column;
 
-#next{
+    justify-content: center;
 
-    right:8px;
+    align-items: center;
 
-}
+    gap: 18px;
 
-
-
-.toolbar{
-
-
-    bottom:
-    calc(10px + env(safe-area-inset-bottom));
-
-
-    gap:12px;
-
-
-    padding:8px 14px;
-
+    padding: 30px;
 
 }
 
 
+/* =========================================================
+   BOTÓN INSCRIBIRME
+========================================================= */
 
-.zoomBtn{
+.btn-priit {
 
+    display: inline-flex;
 
-    width:50px;
+    align-items: center;
+    justify-content: center;
 
+    background: #42B6E8;
 
-    height:50px;
+    color: #ffffff;
 
+    text-decoration: none;
 
-    font-size:30px;
+    font-size: 24px;
 
+    font-weight: bold;
+
+    padding: 17px 45px;
+
+    min-width: 230px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 14px rgba(66, 182, 232, 0.30);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
 
 }
 
 
+.btn-priit:hover {
+
+    background: #2ca6dc;
+
+    transform: scale(1.04);
 
 }
 
 
+/* =========================================================
+   BOTÓN DESCARGAR PDF
+========================================================= */
+
+.btn-download {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    color: #42B6E8;
+
+    border: 2px solid #42B6E8;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    padding: 10px 24px;
+
+    min-width: 170px;
+
+    border-radius: 30px;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
 
 
-/* ===========================
+.btn-download:hover {
+
+    background: #42B6E8;
+
+    color: #ffffff;
+
+    transform: scale(1.04);
+
+}
+
+
+/* =========================================================
+   ESCRITORIO
+========================================================= */
+
+@media (min-width: 901px) {
+
+    #book {
+
+        width: 94vw;
+
+        height: 92vh;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET / CELULAR
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #book {
+
+        width: 100vw;
+
+        height: 100vh;
+
+    }
+
+
+    .nav {
+
+        width: 58px;
+        height: 58px;
+
+        font-size: 27px;
+
+    }
+
+
+    #prev {
+
+        left: 10px;
+
+    }
+
+
+    #next {
+
+        right: 10px;
+
+    }
+
+
+    .toolbar {
+
+        min-height: 68px;
+
+        gap: 13px;
+
+        padding: 7px 11px;
+
+        bottom: max(10px, env(safe-area-inset-bottom));
+
+    }
+
+
+    .zoomBtn {
+
+        width: 54px;
+        height: 54px;
+
+        font-size: 32px;
+
+    }
+
+
+    #pageInfo {
+
+        min-width: 65px;
+
+        font-size: 15px;
+
+    }
+
+}
+
+
+/* =========================================================
    CELULAR HORIZONTAL
-=========================== */
+========================================================= */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    #zoomContainer {
+
+        width: 100vw;
+        height: 100vh;
+
+    }
 
 
-@media(
-orientation:landscape
-)
-and
-(max-width:900px){
+    #book {
+
+        width: 100vw;
+        height: 100vh;
+
+    }
 
 
-#book{
+    .nav {
 
-    width:100vw;
+        width: 52px;
+        height: 52px;
 
-    height:90vh;
+        font-size: 25px;
+
+    }
+
+
+    #prev {
+
+        left: 8px;
+
+    }
+
+
+    #next {
+
+        right: 8px;
+
+    }
+
+
+    .toolbar {
+
+        min-height: 58px;
+
+        gap: 10px;
+
+        padding: 5px 9px;
+
+        bottom: 8px;
+
+    }
+
+
+    .zoomBtn {
+
+        width: 46px;
+        height: 46px;
+
+        font-size: 28px;
+
+    }
+
+
+    #pageInfo {
+
+        min-width: 58px;
+
+        font-size: 14px;
+
+    }
 
 }
 
 
+/* =========================================================
+   CELULAR VERTICAL
+========================================================= */
+
+@media (max-width: 600px) and (orientation: portrait) {
+
+    .nav {
+
+        width: 54px;
+        height: 54px;
+
+        font-size: 25px;
+
+    }
+
+
+    #prev {
+
+        left: 7px;
+
+    }
+
+
+    #next {
+
+        right: 7px;
+
+    }
+
+
+    .toolbar {
+
+        gap: 10px;
+
+    }
+
+
+    .zoomBtn {
+
+        width: 52px;
+        height: 52px;
+
+        font-size: 30px;
+
+    }
+
+
+    .btn-priit {
+
+        font-size: 20px;
+
+        padding: 15px 32px;
+
+        min-width: 200px;
+
+    }
+
+
+    .btn-download {
+
+        font-size: 14px;
+
+        padding: 9px 20px;
+
+        min-width: 155px;
+
+    }
 
 }
 
 
+/* =========================================================
+   DISPOSITIVOS CON NOTCH
+========================================================= */
 
+@supports (padding: env(safe-area-inset-top)) {
 
-/* ===========================
-   PANTALLAS PEQUEÑAS
-=========================== */
+    .viewer {
 
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
 
-@media(max-width:420px){
-
-
-.nav{
-
-    display:none;
-
-}
-
-
-
-#pageInfo{
-
-    font-size:14px;
+    }
 
 }
 
 
+/* =========================================================
+   EVITAR SELECCIÓN / ARRASTRE
+========================================================= */
+
+button,
+a,
+canvas,
+img {
+
+    -webkit-user-drag: none;
+
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES SI EL USUARIO LO PIDE
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .nav,
+    .zoomBtn,
+    .btn-priit,
+    .btn-download {
+
+        transition: none;
+
+    }
 
 }
