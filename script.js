@@ -7,12 +7,9 @@
    CONFIGURACIÓN
 ========================================================= */
 
-const PDF_URL =
-    "assets/006_folletopriit.pdf";
-
+const PDF_URL = "assets/006_folletopriit.pdf";
 
 const PDF_WIDTH = 900;
-
 const PDF_HEIGHT = 1273;
 
 
@@ -20,29 +17,22 @@ const PDF_HEIGHT = 1273;
    ELEMENTOS
 ========================================================= */
 
-const book =
-    document.getElementById("book");
-
+const book = document.getElementById("book");
 
 const zoomContainer =
     document.getElementById("zoomContainer");
 
-
 const pageInfo =
     document.getElementById("pageInfo");
-
 
 const nextButton =
     document.getElementById("next");
 
-
 const prevButton =
     document.getElementById("prev");
 
-
 const zoomInButton =
     document.getElementById("zoomIn");
-
 
 const zoomOutButton =
     document.getElementById("zoomOut");
@@ -64,7 +54,7 @@ let pinchStartZoom = 1;
 
 
 /* =========================================================
-   DETECTAR ORIENTACIÓN
+   DETECTAR DISPOSITIVO
 ========================================================= */
 
 function esMovil() {
@@ -77,7 +67,7 @@ function esMovil() {
 function estaHorizontal() {
 
     return window.innerWidth >
-        window.innerHeight;
+           window.innerHeight;
 
 }
 
@@ -135,9 +125,9 @@ function configurarTamanio() {
        DOS PÁGINAS
     ================================================ */
 
-    book.style.width = "90vw";
+    book.style.width = "78vw";
 
-    book.style.height = "82vh";
+    book.style.height = "78vh";
 
 }
 
@@ -164,7 +154,7 @@ async function cargarPDF() {
 
 
         /* =================================================
-           CREAR PÁGINAS
+           CREAR PÁGINAS DEL PDF
         ================================================= */
 
         for (
@@ -254,7 +244,7 @@ async function cargarPDF() {
 
 
         /* =================================================
-           ÚLTIMA PÁGINA
+           ÚLTIMA PÁGINA CON BOTONES
         ================================================= */
 
         const ultima =
@@ -300,7 +290,7 @@ async function cargarPDF() {
 
 
         /* =================================================
-           TAMAÑO INICIAL
+           CONFIGURAR TAMAÑO
         ================================================= */
 
         configurarTamanio();
@@ -336,8 +326,18 @@ async function cargarPDF() {
                     maxHeight:
                         2546,
 
+
+                    /* ====================================
+                       TAPA INDEPENDIENTE
+                    ==================================== */
+
                     showCover:
-                        false,
+                        true,
+
+
+                    /* ====================================
+                       EFECTO DE LIBRO
+                    ==================================== */
 
                     maxShadowOpacity:
                         0.25,
@@ -347,6 +347,11 @@ async function cargarPDF() {
 
                     drawShadow:
                         true,
+
+
+                    /* ====================================
+                       RESPONSIVE
+                    ==================================== */
 
                     usePortrait:
                         true,
@@ -365,7 +370,7 @@ async function cargarPDF() {
 
 
         /* =================================================
-           CARGAR
+           CARGAR PÁGINAS
         ================================================= */
 
         flip.loadFromHTML(
@@ -373,9 +378,11 @@ async function cargarPDF() {
         );
 
 
-        actualizarContador(
-            0
-        );
+        /* =================================================
+           CONTADOR INICIAL
+        ================================================= */
+
+        actualizarContador(0);
 
 
         /* =================================================
@@ -406,10 +413,14 @@ async function cargarPDF() {
         );
 
 
+        /* =================================================
+           ZOOM
+        ================================================= */
+
         aplicarZoom();
 
-
     }
+
 
     catch (error) {
 
@@ -443,10 +454,10 @@ function actualizarContador(
         pagina + 1;
 
 
-    /*
-     * En horizontal se muestran
-     * dos páginas.
-     */
+    /* ================================================
+       HORIZONTAL EN CELULAR
+       DOS PÁGINAS
+    ================================================ */
 
     if (
         esMovil() &&
@@ -469,6 +480,7 @@ function actualizarContador(
 
     }
 
+
     else {
 
         pageInfo.textContent =
@@ -480,7 +492,7 @@ function actualizarContador(
 
 
 /* =========================================================
-   BOTÓN SIGUIENTE
+   SIGUIENTE
 ========================================================= */
 
 nextButton.onclick =
@@ -496,7 +508,7 @@ nextButton.onclick =
 
 
 /* =========================================================
-   BOTÓN ANTERIOR
+   ANTERIOR
 ========================================================= */
 
 prevButton.onclick =
@@ -562,7 +574,7 @@ zoomOutButton.onclick =
 
 
 /* =========================================================
-   CTRL + RUEDA
+   CTRL + RUEDA DEL MOUSE
 ========================================================= */
 
 zoomContainer.addEventListener(
@@ -583,6 +595,7 @@ zoomContainer.addEventListener(
             zoom += 0.1;
 
         }
+
         else {
 
             zoom -= 0.1;
@@ -751,8 +764,8 @@ window.addEventListener(
 
 
                     /*
-                     * Volvemos a 1x cuando
-                     * cambia vertical/horizontal.
+                     * Al girar el teléfono
+                     * volvemos a zoom normal.
                      */
 
                     zoom = 1;
@@ -775,7 +788,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   EVITAR SCROLL
+   EVITAR SCROLL INNECESARIO EN IOS
 ========================================================= */
 
 document.addEventListener(
@@ -798,7 +811,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   INICIO
+   INICIAR
 ========================================================= */
 
 configurarTamanio();
