@@ -17,39 +17,58 @@
 
 <body>
 
-    <!-- CONTENEDOR PRINCIPAL -->
+    <!-- VISOR -->
+
     <div class="viewer">
 
-        <!-- BOTÓN ANTERIOR -->
-        <button id="prev" class="nav" aria-label="Página anterior">
+        <!-- ANTERIOR -->
+
+        <button
+            id="prev"
+            class="nav"
+            aria-label="Página anterior">
+
             ❮
+
         </button>
 
-        <!-- CONTENEDOR DEL LIBRO -->
+
+        <!-- LIBRO -->
+
         <div id="zoomContainer">
 
             <div id="book"></div>
 
         </div>
 
-        <!-- BOTÓN SIGUIENTE -->
-        <button id="next" class="nav" aria-label="Página siguiente">
+
+        <!-- SIGUIENTE -->
+
+        <button
+            id="next"
+            class="nav"
+            aria-label="Página siguiente">
+
             ❯
+
         </button>
 
     </div>
 
-    <!-- BARRA INFERIOR -->
+
+    <!-- CONTROLES -->
+
     <div class="toolbar">
 
         <button
             id="zoomOut"
             class="zoomBtn"
-            title="Alejar">
+            aria-label="Alejar">
 
             −
 
         </button>
+
 
         <span id="pageInfo">
 
@@ -57,10 +76,11 @@
 
         </span>
 
+
         <button
             id="zoomIn"
             class="zoomBtn"
-            title="Acercar">
+            aria-label="Acercar">
 
             +
 
@@ -68,24 +88,35 @@
 
     </div>
 
+
     <!-- PDF.JS -->
+
     <script type="module">
 
         import * as pdfjsLib from
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
 
+
         window.pdfjsLib = pdfjsLib;
+
 
         pdfjsLib.GlobalWorkerOptions.workerSrc =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
     </script>
 
+
     <!-- PAGEFLIP -->
+
     <script src="lib/page-flip.browser.js"></script>
 
-    <!-- SCRIPT -->
-    <script type="module" src="script.js"></script>
+
+    <!-- NUESTRO SCRIPT -->
+
+    <script
+        type="module"
+        src="script.js">
+    </script>
 
 </body>
 
