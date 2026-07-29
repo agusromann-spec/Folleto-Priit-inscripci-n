@@ -87,14 +87,20 @@ body {
 
 #book {
 
+    #book {
+
     position: relative;
 
-    width: 94vw;
-    height: 92vh;
+    width: auto;
+
+    height: 88vh;
+
+    aspect-ratio: 900 / 1273;
 
     transform-origin: center center;
 
     will-change: transform;
+
 
 }
 
