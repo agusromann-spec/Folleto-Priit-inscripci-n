@@ -3,134 +3,89 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>PRIIT Flipbook</title>
+    <title>PRIIT Flipbook</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
 
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="viewer">
 
-<div class="viewer">
+        <!-- BOTÓN ANTERIOR -->
+        <button id="prev" class="nav" aria-label="Página anterior">
+            ❮
+        </button>
 
+        <!-- CONTENEDOR DEL LIBRO -->
+        <div id="zoomContainer">
 
-    <!-- BOTÓN ANTERIOR -->
-    <button id="prev" class="nav" aria-label="Página anterior">
-        ❮
-    </button>
+            <div id="book"></div>
 
+        </div>
 
-    <!-- LIBRO -->
-    <div id="zoomContainer">
-
-        <div id="book"></div>
+        <!-- BOTÓN SIGUIENTE -->
+        <button id="next" class="nav" aria-label="Página siguiente">
+            ❯
+        </button>
 
     </div>
 
+    <!-- BARRA INFERIOR -->
+    <div class="toolbar">
 
-    <!-- BOTÓN SIGUIENTE -->
-    <button id="next" class="nav" aria-label="Página siguiente">
-        ❯
-    </button>
+        <button
+            id="zoomOut"
+            class="zoomBtn"
+            title="Alejar">
 
+            −
 
-</div>
+        </button>
 
+        <span id="pageInfo">
 
+            Cargando...
 
-<!-- BARRA DE CONTROL -->
+        </span>
 
-<div class="toolbar">
+        <button
+            id="zoomIn"
+            class="zoomBtn"
+            title="Acercar">
 
+            +
 
-    <button id="zoomOut"
-    class="zoomBtn">
+        </button>
 
-        −
+    </div>
 
-    </button>
+    <!-- PDF.JS -->
+    <script type="module">
 
+        import * as pdfjsLib from
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
 
+        window.pdfjsLib = pdfjsLib;
 
-    <span id="pageInfo">
-        Cargando...
-    </span>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
 
+    </script>
 
+    <!-- PAGEFLIP -->
+    <script src="lib/page-flip.browser.js"></script>
 
-    <button id="zoomIn"
-    class="zoomBtn">
-
-        +
-
-    </button>
-
-
-
-    <button id="downloadPDF"
-    class="actionBtn">
-
-        Descargar PDF
-
-    </button>
-
-
-
-</div>
-
-
-
-<!-- BOTÓN INSCRIPCIÓN -->
-
-<a
-id="subscribeBtn"
-href="https://formularios.ambiente.gba.gob.ar/form/37"
-target="_blank">
-
-Inscribirme
-
-</a>
-
-
-
-
-<!-- PDF.JS -->
-
-<script type="module">
-
-import * as pdfjsLib from
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
-
-
-window.pdfjsLib = pdfjsLib;
-
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-
-
-</script>
-
-
-
-<!-- PAGEFLIP -->
-
-<script src="lib/page-flip.browser.js"></script>
-
-
-
-<!-- SCRIPT PRINCIPAL -->
-
-<script type="module" src="script.js"></script>
-
-
+    <!-- SCRIPT -->
+    <script type="module" src="script.js"></script>
 
 </body>
 
